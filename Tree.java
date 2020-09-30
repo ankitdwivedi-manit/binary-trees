@@ -254,9 +254,23 @@ class Tree{
     }
 
 
+    /*--------------------------------BUILD HEIGHT BALANCED BINARY TREE FROM GIVEN ARRAY------------------------------------------------------- */
+    static Node createHeightBalancedTree(int[] a,int l,int r){
+        if(l>r){
+            return null;
+        }
+        if(l==r){
+            return new Node(a[l]);
+        }
+        int m=l+(r-l)/2;
+        Node temp=new Node(a[m]);
+        temp.left=createHeightBalancedTree(a, l, m-1);
+        temp.right=createHeightBalancedTree(a, m+1, r);
+        return temp;
+    }
 
     public static void main(String[] args){
-        Node head=buildTree();
+        // Node head=buildTree();
         // printTree(head);
         // System.out.println();
         // preorder(head);
@@ -285,8 +299,12 @@ class Tree{
         // replaceSum(head);
         // printTree(head);
         
-        HeightBalancedNode hb=isHeightBalanced(head);
-        System.out.println(hb.balance);
+        // HeightBalancedNode hb=isHeightBalanced(head);
+        // System.out.println(hb.balance);
+
+        int[] arr={1, 2, 3, 4, 5, 6, 7, 9, 0};
+        Node heightBalancedNode=createHeightBalancedTree(arr, 0, 8);
+        printTree(heightBalancedNode);
         sc.close();
     }
 }

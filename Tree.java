@@ -129,6 +129,7 @@ class Tree{
     } 
     //modifing the above approach
     //inserting null after each level.
+    //note java arraydequeue does not allow null insertion. for null insertion we should implement queue with linked list
     static void modifiedlevelorder1(Node root){
         if(root==null){
             return;
@@ -151,8 +152,23 @@ class Tree{
                 q.offer(t.right);
         }
     }
+    static int countNodes(Node root){
+        if(root==null){
+            return 0;
+        }
+        int ln=countNodes(root.left);
+        int rn=countNodes(root.right);
+        return 1+ln+rn;
+    }
     
-    
+    static int sumOfNodes(Node root){
+        if(root==null){
+            return 0;
+        }
+        int lns=sumOfNodes(root.left);
+        int rns=sumOfNodes(root.right);
+        return root.data+lns+rns;
+    }
     public static void main(String[] args){
         Node head=buildTree();
         // printTree(head);
@@ -172,7 +188,8 @@ class Tree{
         // }
 
         // levelorderIterative(head);
-        modifiedlevelorder1(head);
+        // modifiedlevelorder1(head);
+        System.out.println(countNodes(head)+"  --> "+sumOfNodes(head));
         sc.close();
     }
 }

@@ -22,6 +22,7 @@ class Pair{
 
 class Tree{
     static Scanner sc=new Scanner(System.in);
+    
     static Node buildTree(){
         int x=sc.nextInt();
         if(x==-1){
@@ -41,6 +42,7 @@ class Tree{
     }
 
 
+    /*----------------------------------------------------RECURSIVE TRAVERSALS-------------------------------------------------------------------------- */
     //recursive traversals(inorder,preorder and postorder)
     static void preorder(Node root){
         if(root==null)
@@ -85,7 +87,7 @@ class Tree{
 
 
 
-
+    /*--------------------------------------------ITERATIVE LEVEL ORDER (BFS)------------------------------------------------------------------------- */
     //levelorder iterative approach(BFS). complexity O(n). far better than recursive approach.
     static void levelorderIterative(Node root){
         if(root==null)
@@ -103,7 +105,7 @@ class Tree{
     }
 
 
-
+    /*------------------------------------------LEVEL ORDER -2  -------------------------------------------------------------*/
     //modified iterative levelorder in which each level is seperated.
     //with the help of pair in which we are also keeping track of levels.
     static void modifiedlevelorder(Node root){
@@ -152,6 +154,10 @@ class Tree{
                 q.offer(t.right);
         }
     }
+
+
+
+
     static int countNodes(Node root){
         if(root==null){
             return 0;
@@ -160,7 +166,6 @@ class Tree{
         int rn=countNodes(root.right);
         return 1+ln+rn;
     }
-    
     static int sumOfNodes(Node root){
         if(root==null){
             return 0;
@@ -169,6 +174,49 @@ class Tree{
         int rns=sumOfNodes(root.right);
         return root.data+lns+rns;
     }
+
+
+
+
+    /*---------------------------------------------DIAMETER OF BINARY TREE--------------------------------------------------------------------*/
+    //diametre of tree:-
+    //worst case time complexity of this approach is O(n^2).
+    //since at each node we are calculating height and height itself take O(n) to compute.
+    //improved time complexity in next function fastDiameter().
+    static int diameter(Node root){
+        if(root==null){
+            return 0;
+        }
+        int headDiameter=height(root.left)+height(root.right);
+        int ld=diameter(root.left);
+        int rd=diameter(root.right);
+        return Math.max(headDiameter,Math.max(ld,rd));
+    }
+    //in fastDiameter used Pairs class to return two values(height and diameter).
+    //time complexity of this bottom up approach is O(n). as we are calculating height only once and using it ireespective of calculating it again and again.
+    static class Pairs{
+        int height;
+        int diameter;
+        Pairs(int height,int diameter){
+            this.height=height;
+            this.diameter=diameter;
+        }
+    }
+    static Pairs fastDiameter(Node root){
+        Pairs p=null;
+        if(root==null){
+            p=new Pairs(0,0);
+            return p;
+        }
+        Pairs left=fastDiameter(root.left);
+        Pairs right=fastDiameter(root.right);
+        int p_height=Math.max(left.height,right.height)+1;
+        int p_diameter=Math.max(left.height+right.height,Math.max(left.diameter,right.diameter));
+        p=new Pairs(p_height,p_diameter);
+        return p;
+    }
+
+
     public static void main(String[] args){
         Node head=buildTree();
         // printTree(head);
@@ -189,7 +237,12 @@ class Tree{
 
         // levelorderIterative(head);
         // modifiedlevelorder1(head);
-        System.out.println(countNodes(head)+"  --> "+sumOfNodes(head));
+        // System.out.println(countNodes(head)+"  --> "+sumOfNodes(head));
+
+
+        // System.out.println("diameter = "+diameter(head));
+        //Pairs p=fastDiameter(head);
+        //System.out.println("diameter = "+p.diameter);
         sc.close();
     }
 }

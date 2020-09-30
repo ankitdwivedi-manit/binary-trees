@@ -216,6 +216,44 @@ class Tree{
         return p;
     }
 
+    /*--------------------------REPLACE THE CURRENT NODE WITH THE SUM OF ITS CHILD FOR EVERY NODE EXEPT LEAF------------------------------------------ */
+    static int replaceSum(Node root){
+        if(root.left==null && root.right==null){
+            return root.data;
+        }
+        int left=replaceSum(root.left);
+        int right=replaceSum(root.right);
+        int toReturn=left+right+root.data;
+        root.data=left+right;
+        return toReturn;
+    }
+
+
+    /*--------------------------CHECK IF HEIGHT BALANCED NINARY TREE------------------------------------- */
+    //time complexity of given bottom up approach is O(n).
+    //if we do the problem by top down, then time complexity will be O(n^2). same as calcuated in diameter.
+    static class HeightBalancedNode{
+        int height;
+        boolean balance;
+        HeightBalancedNode(int height,boolean balance){
+            this.height=height;
+            this.balance=balance;
+        }
+    }
+    static HeightBalancedNode isHeightBalanced(Node root){
+        if(root==null){
+            return new HeightBalancedNode(0, true);
+        }
+        HeightBalancedNode left=isHeightBalanced(root.left);
+        HeightBalancedNode right=isHeightBalanced(root.right);
+        int bal=Math.abs(left.height-right.height);
+        if(bal<=1 && left.balance && right.balance) {
+            return new HeightBalancedNode(Math.max(left.height,right.height)+1, true);
+        }
+        return new HeightBalancedNode(Math.max(left.height,right.height)+1, false);
+    }
+
+
 
     public static void main(String[] args){
         Node head=buildTree();
@@ -243,8 +281,13 @@ class Tree{
         // System.out.println("diameter = "+diameter(head));
         //Pairs p=fastDiameter(head);
         //System.out.println("diameter = "+p.diameter);
+        
+        // replaceSum(head);
+        // printTree(head);
+        
+        HeightBalancedNode hb=isHeightBalanced(head);
+        System.out.println(hb.balance);
         sc.close();
     }
 }
-
 // 1 2 4 -1 -1 5 -1 -1 3 6 -1 -1 7 -1 -1

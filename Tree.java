@@ -270,7 +270,8 @@ class Tree{
     }
 
 
-
+    // worst case time complexty of make tree from (inorder & preorder) and (inorder & postorder) is O(n^2) (...ie for skewed trees). approaches given is of O(n*n).
+    //we can improve the time complexity by using hashmap to store the indices using hashmaps the time complexity would be O(n).
     /*--------------------------------MAKE TREE FROM INORDER AND PREORDER------------------------------------------------------------- */
     static int i=0;
     static Node makeTreeFromInAndPreorder(int[] in,int[] pre,int s,int e){
@@ -290,6 +291,28 @@ class Tree{
         root.right=makeTreeFromInAndPreorder(in, pre, index+1, e);
         return root;
     }
+    /*--------------------------MAKE TREE FROM INORDER AND POSTORDER--------------------------------------------------------- */
+    static int j=0;
+    static Node makeTreeFromInorderAndPostorder(int[] in,int[] post,int s,int e){
+        if(s>e){
+            return null;
+        }
+        Node root=new Node(post[j]);
+        int index=-1;
+        for(int i=s;i<=e;i++){
+            if(in[i]==post[j]){
+                index=i;
+                break;
+            }
+        }
+        j--;
+        root.right=makeTreeFromInorderAndPostorder(in, post, index+1, e);
+        root.left=makeTreeFromInorderAndPostorder(in, post, s, index-1);
+        return root;
+    }
+
+
+
 
     public static void main(String[] args){
         // Node head=buildTree();
@@ -329,10 +352,17 @@ class Tree{
         // printTree(heightBalancedNode);
 
         
-        int[] preorder={1, 2, 3, 4, 8, 5, 6, 7};
-        int[] inorder={3, 2, 8, 4, 1, 6, 7, 5};
-        Node head=makeTreeFromInAndPreorder(inorder, preorder, 0, inorder.length-1);
-        printTree(head);
+        // int[] preorder={1, 2, 3, 4, 8, 5, 6, 7};
+        // int[] inorder={3, 2, 8, 4, 1, 6, 7, 5};
+        // Node head=makeTreeFromInAndPreorder(inorder, preorder, 0, inorder.length-1);
+        // printTree(head);
+
+        // int[] inorder={3, 2, 8, 4, 1, 6, 7, 5};
+        // int[] postorder={3, 8, 4, 2, 7, 6, 5, 1};
+        // j=inorder.length-1;
+        // Node head=makeTreeFromInorderAndPostorder(inorder, postorder, 0, inorder.length-1);
+        // printTree(head);
+
         sc.close();
     }
 }

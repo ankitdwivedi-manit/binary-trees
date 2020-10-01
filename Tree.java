@@ -269,6 +269,28 @@ class Tree{
         return temp;
     }
 
+
+
+    /*--------------------------------MAKE TREE FROM INORDER AND PREORDER------------------------------------------------------------- */
+    static int i=0;
+    static Node makeTreeFromInAndPreorder(int[] in,int[] pre,int s,int e){
+        if(s>e){
+            return null;
+        }
+        Node root=new Node(pre[i]);
+        int index=-1;
+        for(int j=s;j<=e;j++){
+            if(in[j]==pre[i]){
+                index=j;
+                break;
+            }
+        }
+        i++;
+        root.left=makeTreeFromInAndPreorder(in, pre, s, index-1);
+        root.right=makeTreeFromInAndPreorder(in, pre, index+1, e);
+        return root;
+    }
+
     public static void main(String[] args){
         // Node head=buildTree();
         // printTree(head);
@@ -302,9 +324,15 @@ class Tree{
         // HeightBalancedNode hb=isHeightBalanced(head);
         // System.out.println(hb.balance);
 
-        int[] arr={1, 2, 3, 4, 5, 6, 7, 9, 0};
-        Node heightBalancedNode=createHeightBalancedTree(arr, 0, 8);
-        printTree(heightBalancedNode);
+        // int[] arr={1, 2, 3, 4, 5, 6, 7, 9, 0};
+        // Node heightBalancedNode=createHeightBalancedTree(arr, 0, 8);
+        // printTree(heightBalancedNode);
+
+        
+        int[] preorder={1, 2, 3, 4, 8, 5, 6, 7};
+        int[] inorder={3, 2, 8, 4, 1, 6, 7, 5};
+        Node head=makeTreeFromInAndPreorder(inorder, preorder, 0, inorder.length-1);
+        printTree(head);
         sc.close();
     }
 }
